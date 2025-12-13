@@ -3,16 +3,19 @@ class Solution {
         Map<Integer, Integer> map = new HashMap<>();
         Deque<Integer> st = new ArrayDeque<>();
 
-        for(int num : nums2){
-            while(!st.isEmpty() && num > st.peek()){
-                map.put(st.pop(), num);
+        for(int i = nums2.length - 1; i >= 0; i--){
+
+            while(!st.isEmpty() && st.peek() <= nums2[i]){
+                st.pop();
             }
-            st.push(num);
+            if(st.isEmpty()) map.put(nums2[i], -1);
+            else map.put(nums2[i], st.peek());
+            st.push(nums2[i]);
         }
 
         int[] ans = new int[nums1.length];
-        for(int i = 0 ; i < nums1.length; i++){
-            ans[i] = map.getOrDefault(nums1[i], -1);
+        for(int i = 0 ; i < ans.length; i++){
+            ans[i] = map.get(nums1[i]);
         }
         return ans;
     }

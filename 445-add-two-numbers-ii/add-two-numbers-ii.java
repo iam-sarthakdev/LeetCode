@@ -21,9 +21,9 @@ class Solution {
             if(!st2.isEmpty()){
                 sum+= st2.pop();
             }
-           int digit = sum % 10;
+        //    int digit = sum % 10;
             carry = sum / 10;
-            ListNode node = new ListNode(digit);
+            ListNode node = new ListNode(sum % 10);
             node.next = dummy.next;
             dummy.next = node;
         }

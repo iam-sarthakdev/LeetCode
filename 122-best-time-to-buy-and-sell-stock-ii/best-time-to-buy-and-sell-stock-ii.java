@@ -11,8 +11,8 @@ class Solution {
             if(price > buyPrice){
                 currentProfit += price - buyPrice;
                 buyPrice = price;
-                maxProfit = Math.max(maxProfit, currentProfit);
             }
+            maxProfit = Math.max(maxProfit, currentProfit);
         }
         return maxProfit;
     }

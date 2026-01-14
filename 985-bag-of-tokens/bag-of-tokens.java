@@ -13,11 +13,6 @@ class Solution {
                 currScore++;
                 maxScore = Math.max(maxScore, currScore);
                 left++;
-            }else if(tokens[left] + tokens[right] <= power && left != right){
-                currScore += 2;
-                maxScore = Math.max(maxScore, currScore);
-                left++;
-                right--;
             }else if(currScore == 0){
                 if(power >= tokens[left]){
                     power -= tokens[left];

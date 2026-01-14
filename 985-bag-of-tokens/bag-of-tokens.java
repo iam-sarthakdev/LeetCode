@@ -13,18 +13,19 @@ class Solution {
                 currScore++;
                 maxScore = Math.max(maxScore, currScore);
                 left++;
-            }else if(currScore == 0){
-                if(power >= tokens[left]){
-                    power -= tokens[left];
-                    currScore++;
-                    maxScore = Math.max(maxScore, currScore);
-                    left++;
-                }else return maxScore;
-                }else if(currScore > 0){
+            // }else if(currScore == 0){
+            //     if(power >= tokens[left]){
+            //         power -= tokens[left];
+            //         currScore++;
+            //         maxScore = Math.max(maxScore, currScore);
+            //         left++;
+            //     }else return maxScore;
+            //     
+            }else if(currScore > 0){
                     power += tokens[right];
                     currScore--;
                     right--;
-                }
+                }else break;
             }
             return maxScore;
         }

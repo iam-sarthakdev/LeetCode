@@ -35,15 +35,15 @@ class Solution {
         private boolean isSafe(char[][] board, int row, int col, int n){
 
             // check for columns 
-            int i = row - 1;
+            int i = row;
             while(i >= 0 ){
                 if(board[i][col] == 'Q') return false;
                 i--;
             }
 
             // check left upper
-            int x = row -1;
-            int j = col -1;
+            int x = row;
+            int j = col;
             while(x >= 0 && j >= 0){
                 if(board[x][j] == 'Q') return false;
                 x--;
@@ -51,8 +51,8 @@ class Solution {
             }
 
             // check right upper
-            int y = row - 1;
-            int k = col + 1;
+            int y = row;
+            int k = col;
             while(y >= 0 && k < n){
                 if(board[y][k] == 'Q') return false;
                 y--;

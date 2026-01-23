@@ -16,7 +16,7 @@ class Solution {
             while(!dq.isEmpty() && prefix[i] <= prefix[dq.peekLast()]){
                 dq.pollLast();
             }
-            dq.offer(i);
+            dq.offerLast(i);
         }
         return minLen == Integer.MAX_VALUE ? -1 : minLen;
     }

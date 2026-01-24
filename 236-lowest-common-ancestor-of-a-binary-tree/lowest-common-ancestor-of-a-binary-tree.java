@@ -13,8 +13,8 @@ class Solution {
         if(p == q) return p;
         if(p == root || q == root)return root;
 
-        boolean pInLeft = inLeft(root.left, p);
-        boolean qInLeft = inLeft(root.left, q);
+        // boolean pInLeft = inLeft(root.left, p);
+        // boolean qInLeft = inLeft(root.left, q);
 
         if(inLeft(root.left, p) && inLeft(root.left, q)) return lowestCommonAncestor(root.left, p,q);
         else if(!inLeft(root.left, p) && !inLeft(root.left,q)) return lowestCommonAncestor(root.right, p,q);

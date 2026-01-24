@@ -16,8 +16,8 @@ class Solution {
         boolean pInLeft = inLeft(root.left, p);
         boolean qInLeft = inLeft(root.left, q);
 
-        if(pInLeft && qInLeft) return lowestCommonAncestor(root.left, p,q);
-        else if(!pInLeft && !qInLeft) return lowestCommonAncestor(root.right, p,q);
+        if(inLeft(root.left, p) && inLeft(root.left, q)) return lowestCommonAncestor(root.left, p,q);
+        else if(!inLeft(root.left, p) && !inLeft(root.left,q)) return lowestCommonAncestor(root.right, p,q);
         else return root;
     }
 

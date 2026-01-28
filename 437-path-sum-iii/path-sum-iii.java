@@ -2,7 +2,8 @@ class Solution {
     Map<Long, Integer> map = new HashMap<>();
     public int pathSum(TreeNode root, int targetSum){
         map.put(0L, 1);
-        return dfs(root, targetSum, 0L);
+        long currSum = 0;
+        return dfs(root, targetSum, currSum);
         
     }
     private int dfs(TreeNode root, int targetSum, long currSum){

@@ -1,15 +1,14 @@
 class Solution {
-
+    List<List<Integer>> res = new ArrayList<>();
     public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
-        List<List<Integer>> res = new ArrayList<>();
-        dfs(root, targetSum, new ArrayList<>(), res);
+        
+        dfs(root, targetSum, new ArrayList<>());
         return res;
     }
 
     private void dfs(TreeNode node,
                      int remainingSum,
-                     List<Integer> path,
-                     List<List<Integer>> res) {
+                     List<Integer> path) {
 
         // Base case: reached beyond leaf
         if (node == null) return;
@@ -25,8 +24,8 @@ class Solution {
             }
         } else {
             // 3️⃣ Explore: go deeper with updated remaining sum
-            dfs(node.left, remainingSum - node.val, path, res);
-            dfs(node.right, remainingSum - node.val, path, res);
+            dfs(node.left, remainingSum - node.val, path);
+            dfs(node.right, remainingSum - node.val, path);
         }
 
         // 4️⃣ Un-choose (Backtrack):

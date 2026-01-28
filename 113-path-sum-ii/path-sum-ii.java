@@ -19,14 +19,14 @@ class Solution {
         // 2️⃣ Check: if it's a leaf and sum matches, save the path
         if (node.left == null && node.right == null) {
             if (remainingSum == node.val) {
-                // Must add a COPY because 'path' will be modified later
                 res.add(new ArrayList<>(path));
+                path.remove(path.size() - 1);
+                return;
             }
-        } else {
+        }
             // 3️⃣ Explore: go deeper with updated remaining sum
             dfs(node.left, remainingSum - node.val, path);
             dfs(node.right, remainingSum - node.val, path);
-        }
 
         // 4️⃣ Un-choose (Backtrack):
         // Remove current node before returning to parent

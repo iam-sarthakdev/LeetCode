@@ -1,95 +1,102 @@
-class Trie {
-
-    Trie[] child = new Trie[26];
-    int id = -1;
-}
+import java.util.*;
 
 class Solution {
-
-    private static final int INF = Integer.MAX_VALUE / 2;
-
-    private int add(Trie node, String word, int[] index) {
-        for (char ch : word.toCharArray()) {
-            int i = ch - 'a';
-            if (node.child[i] == null) {
-                node.child[i] = new Trie();
-            }
-            node = node.child[i];
-        }
-        if (node.id == -1) {
-            node.id = ++index[0];
-        }
-        return node.id;
-    }
-
-    private void update(long[] x, long y) {
-        if (x[0] == -1 || y < x[0]) {
-            x[0] = y;
-        }
-    }
-
     public long minimumCost(
-        String source,
-        String target,
-        String[] original,
-        String[] changed,
-        int[] cost
+            String source,
+            String target,
+            String[] original,
+            String[] changed,
+            int[] cost
     ) {
         int n = source.length();
-        int m = original.length;
-        Trie root = new Trie();
 
-        int[] p = { -1 };
-        int[][] G = new int[m * 2][m * 2];
+        // Step 1: Collect all unique strings
+        Map<String, Integer> idMap = new HashMap<>();
+        int id = 0;
 
-        for (int i = 0; i < m * 2; i++) {
-            Arrays.fill(G[i], INF);
-            G[i][i] = 0;
+        for (String s : original) {
+            if (!idMap.containsKey(s)) {
+                idMap.put(s, id++);
+            }
+        }
+        for (String s : changed) {
+            if (!idMap.containsKey(s)) {
+                idMap.put(s, id++);
+            }
         }
 
+        int m = idMap.size();
+        long INF = (long) 1e18;
+
+        // Step 2: Distance matrix for Floyd–Warshall
+        long[][] dist = new long[m][m];
         for (int i = 0; i < m; i++) {
-            int x = add(root, original[i], p);
-            int y = add(root, changed[i], p);
-            G[x][y] = Math.min(G[x][y], cost[i]);
+            Arrays.fill(dist[i], INF);
+            dist[i][i] = 0;
         }
 
-        int size = p[0] + 1;
-        for (int k = 0; k < size; k++) {
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
-                    G[i][j] = Math.min(G[i][j], G[i][k] + G[k][j]);
+        // Step 3: Fill direct transformation costs
+        for (int i = 0; i < original.length; i++) {
+            int u = idMap.get(original[i]);
+            int v = idMap.get(changed[i]);
+            dist[u][v] = Math.min(dist[u][v], cost[i]);
+        }
+
+        // Step 4: Floyd–Warshall
+        for (int k = 0; k < m; k++) {
+            for (int i = 0; i < m; i++) {
+                if (dist[i][k] == INF) continue;
+                for (int j = 0; j < m; j++) {
+                    if (dist[k][j] == INF) continue;
+                    dist[i][j] = Math.min(
+                            dist[i][j],
+                            dist[i][k] + dist[k][j]
+                    );
                 }
             }
         }
 
-        long[] f = new long[n];
-        Arrays.fill(f, -1);
-        for (int j = 0; j < n; j++) {
-            if (j > 0 && f[j - 1] == -1) {
-                continue;
-            }
-            long base = (j == 0 ? 0 : f[j - 1]);
-            if (source.charAt(j) == target.charAt(j)) {
-                f[j] = f[j] == -1 ? base : Math.min(f[j], base);
+        // Step 5: Group original strings by length
+        Map<Integer, List<String>> byLength = new HashMap<>();
+        for (String s : idMap.keySet()) {
+            byLength.computeIfAbsent(s.length(), k -> new ArrayList<>()).add(s);
+        }
+
+        // Step 6: DP
+        long[] dp = new long[n + 1];
+        Arrays.fill(dp, INF);
+        dp[n] = 0; // base case
+
+        for (int i = n - 1; i >= 0; i--) {
+
+            // Option 1: characters match, move one step
+            if (source.charAt(i) == target.charAt(i)) {
+                dp[i] = dp[i + 1];
             }
 
-            Trie u = root;
-            Trie v = root;
-            for (int i = j; i < n; i++) {
-                u = u.child[source.charAt(i) - 'a'];
-                v = v.child[target.charAt(i) - 'a'];
-                if (u == null || v == null) {
-                    break;
+            // Option 2: try all substring transformations
+            for (int len : byLength.keySet()) {
+                if (i + len > n) continue;
+
+                String sSub = source.substring(i, i + len);
+                String tSub = target.substring(i, i + len);
+
+                if (!idMap.containsKey(sSub) || !idMap.containsKey(tSub)) {
+                    continue;
                 }
-                if (u.id != -1 && v.id != -1 && G[u.id][v.id] != INF) {
-                    long newVal = base + G[u.id][v.id];
-                    if (f[i] == -1 || newVal < f[i]) {
-                        f[i] = newVal;
-                    }
-                }
+
+                int u = idMap.get(sSub);
+                int v = idMap.get(tSub);
+
+                if (dist[u][v] == INF) continue;
+
+                dp[i] = Math.min(
+                        dp[i],
+                        dist[u][v] + dp[i + len]
+                );
             }
         }
 
-        return f[n - 1];
+        return dp[0] == INF ? -1 : dp[0];
     }
 }

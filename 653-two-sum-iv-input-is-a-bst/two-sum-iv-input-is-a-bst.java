@@ -1,7 +1,7 @@
 class Solution {
-    List<Integer> list;
+    List<Integer> list = new ArrayList<>();
     public boolean findTarget(TreeNode root, int k) {
-        list = new ArrayList<>();
+       
         if(root == null) return false;
 
         inorder(root);

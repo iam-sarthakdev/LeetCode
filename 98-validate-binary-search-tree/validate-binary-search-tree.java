@@ -1,16 +1,35 @@
 class Solution {
-    TreeNode prev = null;
     public boolean isValidBST(TreeNode root) {
-        return inorder(root);
-    }
-    private boolean inorder(TreeNode node){
-        if(node == null) return true;
-        if(!inorder(node.left)) return false;
+        TreeNode prev = null;
+        TreeNode curr = root;
 
-        if(prev != null && node.val <= prev.val) return false;
-        prev = node;
+        if(root == null) return true;
 
-        return inorder(node.right);
-        
+        while(curr != null){
+            if(curr.left == null){
+                if(prev != null){
+                    if(prev.val >= curr.val) return false;
+                }
+                prev = curr;
+                curr = curr.right;
+            }else{ // curr.left != null
+                TreeNode pred = curr.left;
+                while(pred.right != null && pred.right != curr){
+                    pred = pred.right;
+                }
+                if(pred.right == null){
+                    pred.right = curr;
+                    curr = curr.left;
+                }else if(pred.right == curr){
+                    pred.right = null;
+                    if(prev != null){
+                    if(prev.val >= curr.val) return false;
+                }
+                prev = curr;
+                curr = curr.right;
+                }
+            }
+        }
+        return true;
     }
 }

@@ -9,8 +9,8 @@ class Solution {
         while(curr != null){
             if(curr.left == null){
                 if(prev != null && prev.val > curr.val){
-                        if(first == null) first = prev;
-                        second = curr;      
+                        if(first == null) first = prev; // first only updates the first time
+                        second = curr; // second always updates on finding a mismatch value  
                     }
                 prev = curr;
                 curr = curr.right;

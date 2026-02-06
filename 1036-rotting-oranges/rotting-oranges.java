@@ -48,7 +48,6 @@ class Solution {
                 }
             }
         }
-        System.out.println("Fresh left "+ freshCount);
         return freshCount == 0 ? minute : -1;
     }
 }

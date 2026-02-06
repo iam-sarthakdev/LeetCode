@@ -1,28 +1,23 @@
 class Solution {
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        int originalColor = image[sr][sc];
-        if(originalColor == color) return image;
+        if(image[sr][sc] == color) return image;
 
-        bfs(image, sr, sc, originalColor, color);
+        int originalColor = image[sr][sc];
+        dfs(image, sr, sc, color, originalColor);
         return image;
     }
-
-    private void bfs(int[][] image, int i, int j, int originalColor, int color){
-        if(i < 0 || j < 0 || i >= image.length || j >= image[0].length){
+    private void dfs(int[][] image, int i, int j, int newColor, int originalColor){
+        if(i < 0 || j < 0 || i >= image.length || j >= image[0].length || image[i][j] == newColor || image[i][j] != originalColor){
             return;
         }
 
-        if(image[i][j] != originalColor){
-            return;
-        }
+        image[i][j] = newColor;
 
-        image[i][j] = color;
+        // check 4 dirn
 
-        // now check all 4 directions
-
-        bfs(image, i+1, j, originalColor, color);
-        bfs(image, i-1, j, originalColor, color);
-        bfs(image, i, j+1, originalColor, color);
-        bfs(image, i, j-1, originalColor, color);
+        dfs(image, i-1, j, newColor, originalColor);
+        dfs(image, i+1, j, newColor, originalColor);
+        dfs(image, i, j-1, newColor, originalColor);
+        dfs(image, i, j+1, newColor, originalColor);
     }
 }

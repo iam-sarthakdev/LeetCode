@@ -9,19 +9,19 @@ class Solution {
         //DFS from top & bottom rows
         for (int j = 0; j < m; j++) {
             if (grid[0][j] == 1)
-                dfs(0, j, grid, vis);
+                bfs(0, j, grid, vis);
 
             if (grid[n - 1][j] == 1)
-                dfs(n - 1, j, grid, vis);
+                bfs(n - 1, j, grid, vis);
         }
 
         //DFS from left & right columns (skip corners)
         for (int i = 1; i < n - 1; i++) {
             if (grid[i][0] == 1)
-                dfs(i, 0, grid, vis);
+                bfs(i, 0, grid, vis);
 
             if (grid[i][m - 1] == 1)
-                dfs(i, m - 1, grid, vis);
+                bfs(i, m - 1, grid, vis);
         }
 
         //Flip all unvisited 0 to 1
@@ -35,23 +35,37 @@ class Solution {
         return count;
     }
 
-    // DFS to mark all boundary-connected 0 as visited
-    private void dfs(int r, int c, int[][] grid, boolean[][] vis) {
-
-        //Invalid cell or already processed
-        if (r < 0 || c < 0 ||
-            r >= grid.length || c >= grid[0].length ||
-            grid[r][c] != 1 || vis[r][c]) {
-            return;
-        }
-
-        //Mark this cell as safe
+    // BFS to mark all boundary-connected 0 as visited
+    private void bfs(int r, int c, int[][] grid, boolean[][] vis) {
+        Queue<int[]> q = new ArrayDeque<>();
+        q.add(new int[]{r,c});
         vis[r][c] = true;
 
-        //Explore in all 4 directions
-        dfs(r - 1, c, grid, vis); // up
-        dfs(r + 1, c, grid, vis); // down
-        dfs(r, c - 1, grid, vis); // left
-        dfs(r, c + 1, grid, vis); // right
+        while(!q.isEmpty()){
+            int[] pair = q.poll();
+            int x = pair[0];
+            int y = pair[1];
+
+            // check up
+            if(x - 1 >= 0 && grid[x-1][y] == 1 && !vis[x-1][y]){
+                q.add(new int[]{x-1, y});
+                vis[x-1][y] = true;
+            }
+            // check down
+            if(x + 1 < grid.length && grid[x+1][y] == 1 && !vis[x+1][y]){
+                q.add(new int[]{x+1, y});
+                vis[x+1][y] = true;
+            }
+            // check right
+            if(y + 1 < grid[0].length && grid[x][y+1] == 1 && !vis[x][y+1]){
+                q.add(new int[]{x, y+1});
+                vis[x][y+1] = true;
+            }
+            // check left
+            if(y - 1 >= 0 && grid[x][y-1] == 1 && !vis[x][y-1]){
+                q.add(new int[]{x, y-1});
+                vis[x][y-1] = true;
+            }
+        }
     }
 }

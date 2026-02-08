@@ -1,52 +1,49 @@
 class Solution {
-
     class Pair{
-        TreeNode node; 
-        int col;
-
-        Pair(TreeNode node, int col){
+        TreeNode node;
+        int hd;
+        Pair(TreeNode node, int hd){
             this.node = node;
-            this.col = col;
+            this.hd = hd;
         }
     }
     public List<List<Integer>> verticalTraversal(TreeNode root) {
-        TreeMap<Integer, List<Integer>> map = new TreeMap<>();
-        Queue<Pair> q = new LinkedList<>();
+        TreeMap<Integer, List<Integer>> res = new TreeMap<>();
 
-        q.offer(new Pair(root, 0));
+        Queue<Pair> q = new ArrayDeque<>();
+        q.add(new Pair(root, 0));
 
         while(!q.isEmpty()){
             int size = q.size();
-            Map<Integer, List<Integer>> colMap = new HashMap<>();
+            Map<Integer, List<Integer>> levelMap = new HashMap<>();
 
             for(int i = 0; i < size; i++){
                 Pair curr = q.poll();
-                int col = curr.col;
-                TreeNode temp = curr.node;
+                int hd = curr.hd;
+                TreeNode node = curr.node;
 
-                if(!colMap.containsKey(col)){
-                    colMap.put(col, new ArrayList<>());
+                if(!levelMap.containsKey(hd)){
+                    levelMap.put(hd, new ArrayList<>());
                 }
-                colMap.get(col).add(temp.val);
+                levelMap.get(hd).add(node.val);
 
-                if(temp.left != null) q.add(new Pair(temp.left, col - 1));
-                if(temp.right != null) q.add(new Pair(temp.right, col + 1));
+                if(node.left != null) q.add(new Pair(node.left, hd - 1));
+                if(node.right != null) q.add(new Pair(node.right, hd + 1));
             }
-            // current level finish, now sort the values in map and add in main map
-            for(int col : colMap.keySet()){
-                List<Integer> values = colMap.get(col);
-                Collections.sort(values);
-                if(!map.containsKey(col)){
-                map.put(col, new ArrayList<>());
+            for(int key : levelMap.keySet()){
+                List<Integer> temp = levelMap.get(key);
+                Collections.sort(temp);
+
+                    if(!res.containsKey(key)){
+                    res.put(key, new ArrayList<>());
+                }
+                res.get(key).addAll(temp);  
             }
-            map.get(col).addAll(values);
-            }    
         }
-        // now convert the values of the main map to an arraylist
-        List<List<Integer>> res = new ArrayList<>();
-        for(List<Integer> values : map.values()){
-            res.add(values);
+        List<List<Integer>> ans = new ArrayList<>();
+        for(List<Integer> value : res.values()){
+            ans.add(value);
         }
-        return res;
+        return ans;
     }
 }

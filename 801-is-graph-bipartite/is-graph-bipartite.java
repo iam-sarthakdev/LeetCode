@@ -1,32 +1,28 @@
 class Solution {
     public boolean isBipartite(int[][] graph) {
-        int[] color = new int[graph.length];
+        int n = graph.length;
+        int m = graph[0].length;
+        int[] color = new int[n];
         Arrays.fill(color, -1);
 
-        for(int i = 0; i < graph.length; i++){
+        for(int i = 0; i < n; i++){
             if(color[i] == -1){
-                if(!bfsCheck(i, graph, color)){
-                    return false;
-                }
+                color[i] = 0;
+                if(!dfsCheck(i, graph, color)) return false;
             }
         }
         return true;
     }
-    private boolean bfsCheck(int start, int[][] graph, int[] color){
-        Queue<Integer> q = new ArrayDeque<>();
+    private boolean dfsCheck(int start, int[][] graph, int[] color){
 
-        color[start] = 0;
-        q.add(start);
+        for(int i = 0; i < graph[start].length; i++){
+            int neigh = graph[start][i];
 
-        while(!q.isEmpty()){
-            int node = q.poll();
-            for(int i = 0; i < graph[node].length; i++){
-                int neigh = graph[node][i];
-                if(color[neigh] == -1){
-                    color[neigh] = 1 - color[node];
-                    q.add(graph[node][i]);
-                }else if(color[neigh] == color[node]) return false;
-            }
+            if(color[neigh] == -1){
+                color[neigh] = 1 - color[start];
+                if(!dfsCheck(neigh, graph, color)) return false;
+                
+            }else if(color[start] == color[neigh]) return false;
         }
         return true;
     }

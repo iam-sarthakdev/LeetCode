@@ -1,21 +1,35 @@
 class Solution {
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
-        Map<Integer, Integer> map = new HashMap<>();
-        Deque<Integer> st = new ArrayDeque<>();
+        int n = nums2.length;
+        int m = nums1.length;
+        int[] nge = new int[nums2.length];
+        int[] ans = new int[nums1.length];
+        Stack<Integer> st = new Stack<>();
 
-        for(int i = nums2.length - 1; i >= 0; i--){
+        nge[n-1] = -1;
+        st.push(nums2[n-1]);
 
+        for(int i = n-2; i >= 0; i--){
             while(!st.isEmpty() && st.peek() <= nums2[i]){
                 st.pop();
             }
-            if(st.isEmpty()) map.put(nums2[i], -1);
-            else map.put(nums2[i], st.peek());
+            if(st.isEmpty()) nge[i] = -1;
+            else nge[i] = st.peek();
             st.push(nums2[i]);
         }
 
-        int[] ans = new int[nums1.length];
-        for(int i = 0 ; i < ans.length; i++){
-            ans[i] = map.get(nums1[i]);
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for(int i = 0; i < n; i++){
+            map.put(nums2[i],nge[i]);
+        }
+
+        for(int i = 0; i < m; i++){
+            if(map.containsKey(nums1[i])){
+                ans[i] = map.get(nums1[i]);
+            }else{
+                ans[i] = -1;
+            }
         }
         return ans;
     }

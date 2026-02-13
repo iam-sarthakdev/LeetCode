@@ -15,37 +15,25 @@ class Solution {
                 }
             }
         }
+        int[] dr = {-1,1,0,0};
+        int[] dc = {0,0,-1,1};
 
             while(!q.isEmpty()){
                 int[] pair = q.poll();
                 int row = pair[0];
                 int col = pair[1];
 
-                // check up
-                if(row - 1 >= 0 && !vis[row - 1][col]){
-                    dist[row-1][col] = dist[row][col] + 1;
-                    vis[row-1][col] = true;
-                    q.add(new int[]{row-1, col});
+                for(int i = 0; i < 4; i++){
+                    int nr = row + dr[i];
+                    int nc = col + dc[i];
+
+                    if(nr < n && nr >= 0 && nc < m && nc >= 0 && mat[nr][nc] == 1 && !vis[nr][nc]){
+                        q.add(new int[]{nr, nc});
+                        vis[nr][nc] = true;
+                        dist[nr][nc] = 1 + dist[row][col];
+                    }
                 }
-                // check down
-                if(row + 1 < n && !vis[row + 1][col]){
-                    dist[row+1][col] = dist[row][col] + 1;
-                    vis[row+1][col] = true;
-                    q.add(new int[]{row+1, col});
                 }
-                // check right
-                if(col + 1 < m && !vis[row][col+1]){
-                    dist[row][col+1] = dist[row][col] + 1;
-                    vis[row][col+1] = true;
-                    q.add(new int[]{row, col+1});
-                }
-                // check left
-                if(col - 1 >= 0 && !vis[row][col-1]){
-                    dist[row][col-1] = dist[row][col] + 1;
-                    vis[row][col-1] = true;
-                    q.add(new int[]{row, col-1});
-                }
-            }
             return dist;
         }
     }

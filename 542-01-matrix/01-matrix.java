@@ -18,22 +18,28 @@ class Solution {
         int[] dr = {-1,1,0,0};
         int[] dc = {0,0,-1,1};
 
+        int level = 1;
             while(!q.isEmpty()){
-                int[] pair = q.poll();
+                int size = q.size();
+                for(int i = 0; i < size; i++){
+                    int[] pair = q.poll();
                 int row = pair[0];
                 int col = pair[1];
 
-                for(int i = 0; i < 4; i++){
-                    int nr = row + dr[i];
-                    int nc = col + dc[i];
+                for(int j = 0; j < 4; j++){
+                    int nr = row + dr[j];
+                    int nc = col + dc[j];
 
                     if(nr < n && nr >= 0 && nc < m && nc >= 0 && mat[nr][nc] == 1 && !vis[nr][nc]){
                         q.add(new int[]{nr, nc});
                         vis[nr][nc] = true;
-                        dist[nr][nc] = 1 + dist[row][col];
+                        dist[nr][nc] = level;
                     }
                 }
                 }
+                level++;
+                }
             return dist;
         }
-    }
+}
+    

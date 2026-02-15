@@ -2,34 +2,32 @@ class Solution {
     public int calculate(String s) {
         Stack<Integer> st = new Stack<>();
         int currNum = 0;
-        char lastOperator = '+';
+        char lastOp = '+';
 
-        for(int i = 0; i < s.length(); i++){
+        for(int i= 0; i < s.length(); i++){
             char ch = s.charAt(i);
-
             if(Character.isDigit(ch)){
                 currNum = currNum * 10 + (ch - '0');
             }
+            if((!Character.isDigit(ch) && ch != ' ') || i == s.length() - 1){
 
-            if((!Character.isDigit(ch) && ch != ' ') || i == s.length() - 1 ){
-
-                if(lastOperator == '+'){
+                if(lastOp == '+'){
                     st.push(currNum);
-                }else if(lastOperator == '-'){
+                }else if(lastOp == '-'){
                     st.push(-currNum);
-                }else if(lastOperator == '*'){
-                    st.push(currNum * st.pop());
+                }else if(lastOp == '*'){
+                    st.push(st.pop() * currNum);
                 }else{
                     st.push(st.pop() / currNum);
                 }
                 currNum = 0;
-                lastOperator = ch;
+                lastOp = ch;
             }
         }
-        int result = 0;
-        for(int n : st){
-            result += n;
+        int ans = 0;
+        for(int num : st){
+            ans += num;
         }
-        return result;
+        return ans;
     }
 }

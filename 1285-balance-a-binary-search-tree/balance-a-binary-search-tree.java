@@ -1,31 +1,26 @@
 class Solution {
-    List<TreeNode> nodes = new ArrayList<>();
     public TreeNode balanceBST(TreeNode root) {
-        
-        inorder(root);
+        List<Integer> list = new ArrayList<>();
+        makeList(root, list);
+        return made(0, list.size()-1, root, list);
 
-        return build(0, nodes.size() - 1);
     }
-
-    private void inorder(TreeNode root){
+    private void makeList(TreeNode root, List<Integer> list){
         if(root == null) return;
-
-        inorder(root.left);
-
-        nodes.add(root);
-
-        inorder(root.right);
+        makeList(root.left, list);
+        list.add(root.val);
+        makeList(root.right, list);
     }
-    private TreeNode build(int left, int right){
-        
+
+    private TreeNode made(int left, int right, TreeNode root, List<Integer> list){
+
         if(left > right) return null;
+        int mid = left + (right - left) / 2;
+        TreeNode node = new TreeNode(list.get(mid));
 
-        int mid = left + (right - left)/2;
-        TreeNode root = nodes.get(mid);
+        node.left = made(left, mid - 1, root, list);
+        node.right = made(mid + 1, right, root, list);
 
-        root.left = build(left, mid -1);
-        root.right = build(mid + 1, right);
-
-        return root;
+        return node;
     }
 }

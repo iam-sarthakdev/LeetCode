@@ -1,16 +1,16 @@
 class Solution {
     public int calculate(String s) {
-        Stack<Integer> st = new Stack<>();
+        int n = s.length();
         int currNum = 0;
         char lastOp = '+';
+        Stack<Integer> st = new Stack<>();
 
-        for(int i= 0; i < s.length(); i++){
+        for(int i = 0; i < s.length(); i++){
             char ch = s.charAt(i);
             if(Character.isDigit(ch)){
                 currNum = currNum * 10 + (ch - '0');
             }
-            if((!Character.isDigit(ch) && ch != ' ') || i == s.length() - 1){
-
+            if(!Character.isDigit(ch) && ch != ' ' || i == n - 1){
                 if(lastOp == '+'){
                     st.push(currNum);
                 }else if(lastOp == '-'){
@@ -20,8 +20,8 @@ class Solution {
                 }else{
                     st.push(st.pop() / currNum);
                 }
-                currNum = 0;
                 lastOp = ch;
+                currNum = 0;
             }
         }
         int ans = 0;

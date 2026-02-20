@@ -15,10 +15,12 @@ class Solution {
             }
             top++;
             // process right col from top - down
+            if(left <= right){
             for(int i = top; i <= bottom; i++){
                 matrix[i][right] = num++;
             }
             right--;
+            }
 
             if(top <= bottom){
                 for(int j = right; j >= left; j--){

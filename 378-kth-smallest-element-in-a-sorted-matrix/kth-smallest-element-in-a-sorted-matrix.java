@@ -9,7 +9,7 @@ class Solution {
             high = Math.max(matrix[i][n-1], high);
         }
 
-        while(low < high){
+        while(low <= high){
             int mid = low + (high - low) / 2;
 
             int count = 0;
@@ -17,7 +17,7 @@ class Solution {
                 count += countSmallOrEqual(matrix[i], mid);
             }
             if(count < k) low = mid + 1;
-            else high = mid;
+            else high = mid-1;
         }
         return low;
     }

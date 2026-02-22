@@ -13,7 +13,7 @@ class Solution {
 
             dq.offerLast(i);
 
-            if(i-k+1 >= 0){
+            if(i >= k - 1){
                 result[resIndex++] = nums[dq.peekFirst()];
             }
             

@@ -3,7 +3,7 @@ class Solution {
         int rev=0;
         int dup=x;
         while(x>0){
-            int last=x%10;
+            int last = x%10;
             rev=rev*10+last;
             x=x/10;
         }

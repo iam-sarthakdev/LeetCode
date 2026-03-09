@@ -11,9 +11,7 @@ class Solution {
         if(n == 0) return 0;
 
         if(dp[n][amount] != null) return dp[n][amount];
-
         
-
         if(amount < coins[n-1]){
             return solve(amount, coins, n-1);
         }else{

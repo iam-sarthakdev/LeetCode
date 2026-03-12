@@ -3,7 +3,7 @@ class Solution {
         int n = s.length();
         int m = t.length();
 
-        long[][] dp = new long[n+1][m+1];
+        int[][] dp = new int[n+1][m+1];
 
         for(int i = 0; i <= n; i++){
             dp[i][0] = 1;
@@ -18,6 +18,6 @@ class Solution {
                 }
             }
         }
-        return (int) dp[n][m];
+        return dp[n][m];
     }
 }

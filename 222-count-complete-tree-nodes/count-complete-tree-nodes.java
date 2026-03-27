@@ -1,13 +1,30 @@
 class Solution {
     public int countNodes(TreeNode root) {
-        return dfs(root);
-    }
-    private int dfs(TreeNode root){
         if(root == null) return 0;
 
-        int left = dfs(root.left);
-        int right = dfs(root.right);
+        int leftHeight = getLeft(root);
+        int rightHeight = getRight(root);
 
-        return 1 + left + right;
+        if(leftHeight == rightHeight){ // perfect tree
+            return (1 << leftHeight)-1;
+        }
+        // else recurse
+        return 1 + countNodes(root.left) + countNodes(root.right);
+    }
+    private int getLeft(TreeNode root){
+        int height = 0;
+        while(root != null){
+            height++;
+            root = root.left;
+        }
+        return height;
+    }
+    private int getRight(TreeNode root){
+        int height = 0;
+        while(root != null){
+            height++;
+            root = root.right;
+        }
+        return height;
     }
 }

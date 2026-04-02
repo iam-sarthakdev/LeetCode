@@ -3,53 +3,55 @@ class Solution {
     public int maximumAmount(int[][] coins) {
         int m = coins.length;
         int n = coins[0].length;
-        int[][][] memo = new int[m][n][3];
+
+        int[][][] dp = new int[m][n][3];
+
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                Arrays.fill(memo[i][j], Integer.MIN_VALUE);
+                Arrays.fill(dp[i][j], Integer.MIN_VALUE / 2);
             }
         }
 
-        return dfs(coins, memo, 0, 0, 2);
-    }
-
-    private int dfs(int[][] coins, int[][][] memo, int i, int j, int k) {
-        int m = coins.length;
-        int n = coins[0].length;
-        if (i >= m || j >= n) {
-            return Integer.MIN_VALUE;
+        dp[0][0][0] = coins[0][0];
+        for (int k = 1; k <= 2; k++) {
+            dp[0][0][k] = Math.max(coins[0][0], 0);
         }
 
-        int x = coins[i][j];
-        // arrive at the destination
-        if (i == m - 1 && j == n - 1) {
-            return k > 0 ? Math.max(0, x) : x;
+        for (int j = 1; j < n; j++) {
+            dp[0][j][0] = dp[0][j - 1][0] + coins[0][j];
+            for (int k = 1; k <= 2; k++) {
+                dp[0][j][k] = Math.max(
+                    dp[0][j - 1][k] + coins[0][j],
+                    dp[0][j - 1][k - 1] + Math.max(coins[0][j], 0)
+                );
+            }
         }
 
-        if (memo[i][j][k] != Integer.MIN_VALUE) {
-            return memo[i][j][k];
+        for (int i = 1; i < m; i++) {
+            dp[i][0][0] = dp[i - 1][0][0] + coins[i][0];
+            for (int k = 1; k <= 2; k++) {
+                dp[i][0][k] = Math.max(
+                    dp[i - 1][0][k] + coins[i][0],
+                    dp[i - 1][0][k - 1] + Math.max(coins[i][0], 0)
+                );
+            }
         }
 
-        // not neutralize
-        int res =
-            Math.max(
-                dfs(coins, memo, i + 1, j, k),
-                dfs(coins, memo, i, j + 1, k)
-            ) +
-            x;
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[i][j][0] =
+                    Math.max(dp[i - 1][j][0], dp[i][j - 1][0]) + coins[i][j];
 
-        if (k > 0 && x < 0) {
-            // neutralize
-            res = Math.max(
-                res,
-                Math.max(
-                    dfs(coins, memo, i + 1, j, k - 1),
-                    dfs(coins, memo, i, j + 1, k - 1)
-                )
-            );
+                for (int k = 1; k <= 2; k++) {
+                    dp[i][j][k] = Math.max(
+                        Math.max(dp[i - 1][j][k], dp[i][j - 1][k]) +
+                        coins[i][j],
+                        Math.max(dp[i - 1][j][k - 1], dp[i][j - 1][k - 1])
+                    );
+                }
+            }
         }
 
-        memo[i][j][k] = res;
-        return res;
+        return dp[m - 1][n - 1][2];
     }
 }

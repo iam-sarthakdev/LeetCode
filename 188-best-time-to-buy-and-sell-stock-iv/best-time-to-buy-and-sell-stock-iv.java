@@ -6,7 +6,7 @@ class Solution {
         for(int i = n - 1; i >= 0; i--){
             int[][] curr = new int[2][k+1];
             for(int buy = 0; buy <= 1; buy++){
-                for(int cap = 1; cap <= k; cap++){
+                for(int cap = k; cap >= 1; cap--){
 
                     if(buy == 1){
                         int buyCurr = -prices[i] + prev[0][cap];

@@ -8,9 +8,9 @@ class Solution {
 
         ListNode curr = head;
         ListNode prev = dummy;
-        while(curr != null){
+        while(curr != null && curr.next != null){
             ListNode next = curr.next;
-            if(next == null) return dummy.next;
+            // if(next == null) return dummy.next;
             prev.next = next;
             curr.next = next.next;
             next.next = curr;

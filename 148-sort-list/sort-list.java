@@ -4,8 +4,8 @@ class Solution {
 
         ListNode mid = findMid(head);
 
-        ListNode newHead = mid.next;
-        mid.next = null;
+        ListNode newHead = mid.next; // start of second half
+        mid.next = null; // break first half
 
         ListNode left = sortList(head);
         ListNode right = sortList(newHead);
@@ -14,7 +14,7 @@ class Solution {
     }
     private ListNode findMid(ListNode head){
         ListNode slow = head;
-        ListNode fast = head.next;
+        ListNode fast = head.next; // to avoid infinite loop
         while(fast != null && fast.next != null){
             slow = slow.next;
             fast = fast.next.next;

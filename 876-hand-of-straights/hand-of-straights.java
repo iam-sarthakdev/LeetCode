@@ -24,7 +24,7 @@ class Solution {
                 if(map.get(curr) == 0){
                     map.remove(curr);
 
-                    if(minHeap.peek() != curr) return false;
+                    // if(minHeap.peek() != curr) return false;
 
                     minHeap.poll();
                 }

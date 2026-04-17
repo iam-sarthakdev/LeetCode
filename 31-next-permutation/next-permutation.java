@@ -25,9 +25,9 @@ class Solution {
 
     private void reverse(int[] nums, int left, int right){
         while(left < right){
-        swap(nums, left, right);
-        left++;
-        right--;
+            swap(nums, left, right);
+            left++;
+            right--;
         }
         
     }

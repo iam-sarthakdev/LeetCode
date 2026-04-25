@@ -39,7 +39,7 @@ class Solution {
 
                     // one or more occurrences
                     if(p.charAt(j-2) == sc || p.charAt(j-2) == '.')
-                        dp[i][j] = dp[i][j] || dp[i-1][j];
+                        dp[i][j] = dp[i][j-2] || dp[i-1][j];
                 }
 
                 // otherwise mismatch

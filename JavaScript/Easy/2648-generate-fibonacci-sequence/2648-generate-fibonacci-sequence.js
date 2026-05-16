@@ -1,11 +1,25 @@
+/**
+ * @return {Generator<number>}
+ */
 var fibGenerator = function*() {
-    let prev1 = 0;
-    let prev2 = 1;
 
-    while(true) {
-        yield prev1;
-        const temp = prev1;
-        prev1 = prev2;
-        prev2 += temp;
-    }
+  let current = 0; 
+  let next = 1;
+
+  while (true) {
+    yield current; 
+
+    [current, next] = [next, current + next];
+
+    // The above line is equivalent to the following:
+    // let temp = current;
+    // current = next;
+    // next = temp + next;
+  }
 };
+
+/**
+ * const gen = fibGenerator();
+ * gen.next().value; // 0
+ * gen.next().value; // 1
+ */

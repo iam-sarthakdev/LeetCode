@@ -10,7 +10,7 @@ class Solution {
             result.add(intervals[i]);
             i++;
         }
-        // merging phase
+        // merging phase -> overlapping 
         while(i < n && newEnd >= intervals[i][0]){
             newStart = Math.min(newStart, intervals[i][0]);
             newEnd = Math.max(newEnd, intervals[i][1]);

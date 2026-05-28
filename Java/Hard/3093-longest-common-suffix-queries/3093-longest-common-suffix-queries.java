@@ -1,78 +1,56 @@
-class TrieNode {
-
-    TrieNode[] children = new TrieNode[26];
-    int minLen = Integer.MAX_VALUE;
-    int idx = Integer.MAX_VALUE;
-
-    TrieNode() {
-        for (int i = 0; i < 26; i++) {
-            children[i] = null;
-        }
-    }
-}
-
-class Trie {
-
-    TrieNode root = new TrieNode();
-
-    void insert(String s, int idx) {
-        int len = s.length();
-        TrieNode node = root;
-
-        if (len < node.minLen) {
-            node.minLen = len;
-            node.idx = idx;
-        }
-
-        for (char ch : s.toCharArray()) {
-            int c = ch - 'a';
-            if (node.children[c] == null) {
-                node.children[c] = new TrieNode();
-            }
-            node = node.children[c];
-
-            if (len < node.minLen) {
-                node.minLen = len;
-                node.idx = idx;
-            }
-        }
-    }
-
-    int query(String s) {
-        TrieNode node = root;
-
-        for (char ch : s.toCharArray()) {
-            int c = ch - 'a';
-            if (node.children[c] != null) {
-                node = node.children[c];
-            } else {
-                break;
-            }
-        }
-
-        return node.idx;
-    }
-}
-
 class Solution {
+    class TrieNode {
+        TrieNode[] children = new TrieNode[26];
+        int bestLen = Integer.MAX_VALUE;
+        int bestIdx = Integer.MAX_VALUE;
+    }
 
     public int[] stringIndices(String[] wordsContainer, String[] wordsQuery) {
-        Trie trie = new Trie();
-
+        TrieNode root = new TrieNode();
+        
         for (int i = 0; i < wordsContainer.length; i++) {
-            String reversed = new StringBuilder(wordsContainer[i])
-                .reverse()
-                .toString();
-            trie.insert(reversed, i);
+            String word = wordsContainer[i];
+            int len = word.length();
+            TrieNode curr = root;
+            
+            if (len < curr.bestLen || (len == curr.bestLen && i < curr.bestIdx)) {
+                curr.bestLen = len;
+                curr.bestIdx = i;
+            }
+            
+            for (int j = len - 1; j >= 0; j--) {
+                int charIdx = word.charAt(j) - 'a';
+                
+                if (curr.children[charIdx] == null) {
+                    curr.children[charIdx] = new TrieNode();
+                }
+                
+                curr = curr.children[charIdx];
+                
+                if (len < curr.bestLen || (len == curr.bestLen && i < curr.bestIdx)) {
+                    curr.bestLen = len;
+                    curr.bestIdx = i;
+                }
+            }
         }
-
-        int[] res = new int[wordsQuery.length];
+        
+        int[] ans = new int[wordsQuery.length];
+        
         for (int i = 0; i < wordsQuery.length; i++) {
             String query = wordsQuery[i];
-            String reversed = new StringBuilder(query).reverse().toString();
-            res[i] = trie.query(reversed);
+            int len = query.length();
+            TrieNode curr = root;
+            
+            for (int j = len - 1; j >= 0; j--) {
+                int charIdx = query.charAt(j) - 'a';
+                if (curr.children[charIdx] == null) {
+                    break;
+                }
+                curr = curr.children[charIdx];
+            }
+            ans[i] = curr.bestIdx;
         }
-
-        return res;
+        
+        return ans;
     }
-}
+} 

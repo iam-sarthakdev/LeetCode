@@ -6,7 +6,7 @@ public class Solution {
         boolean[] dp = new boolean[n + 1];
         dp[0] = true;
 
-        for (int j = 1; j <= n; ++j) {
+        for (int j = 1; j <= n; j++) {
             dp[j] = dp[j - 1] && s2.charAt(j - 1) == s3.charAt(j - 1);
         }
 

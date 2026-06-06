@@ -4,7 +4,7 @@ class Solution {
             res.add(curr.toString().trim());
             return;
         }
-        for(String word:wordDict){
+        for(String word: wordDict){
             if(s.startsWith(word,i)){
                 int l=curr.length();
                 curr.append(word).append(" ");
